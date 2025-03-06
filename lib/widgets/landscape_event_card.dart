@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:package_ai_task/theme.dart';
 import 'package:package_ai_task/models/event.dart';
@@ -34,12 +36,16 @@ class LandscapeEventCard extends StatelessWidget {
         child: IntrinsicHeight(
           child: Row(
             children: [
-              Image.network(
-                event.mainImage,
-                width: 100,
-                height: 100,
-                fit: BoxFit.cover,
-              ),
+              if (event.mainImage != null)
+                CachedNetworkImage(
+                  imageUrl: event.mainImage!,
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                  placeholder:
+                      (context, url) =>
+                          Center(child: CupertinoActivityIndicator()),
+                ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

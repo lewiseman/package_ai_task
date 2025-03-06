@@ -167,8 +167,8 @@ class Event {
     return availableClassifications(classifications);
   }
 
-  String get mainImage {
-    if (images.isEmpty) return '';
+  String? get mainImage {
+    if (images.isEmpty) return null;
     return images.first['url'] as String? ?? '';
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -79,12 +80,13 @@ class _EventPageState extends State<EventPage>
               flexibleSpace: FlexibleSpaceBar(
                 background: Stack(
                   children: [
-                    Image.network(
-                      widget.event.images.first['url'],
-                      fit: BoxFit.cover,
-                      width: size.width,
-                      height: double.maxFinite,
-                    ),
+                    if (widget.event.mainImage != null)
+                      CachedNetworkImage(
+                        imageUrl: widget.event.mainImage!,
+                        fit: BoxFit.cover,
+                        width: size.width,
+                        height: double.maxFinite,
+                      ),
                     Positioned(
                       bottom: 0,
                       left: 0,

@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -48,10 +50,18 @@ class FavouritesPage extends ConsumerWidget {
             },
             child: Column(
               children: [
-                ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: 120),
-                  child: Image.network(item.mainImage, fit: BoxFit.cover),
-                ),
+                if (item.mainImage != null)
+                  ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: 120),
+                    child: CachedNetworkImage(
+                      imageUrl: item.mainImage!,
+
+                      fit: BoxFit.cover,
+                      placeholder:
+                          (context, url) =>
+                              Center(child: CupertinoActivityIndicator()),
+                    ),
+                  ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
