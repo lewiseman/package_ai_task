@@ -1,7 +1,7 @@
 import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:flutter/material.dart' hide CarouselController;
 import 'package:intl/intl.dart';
-import 'package:package_ai_task/config/theme.dart';
+import 'package:package_ai_task/theme.dart';
 
 enum WeekStartFrom { sunday, monday }
 

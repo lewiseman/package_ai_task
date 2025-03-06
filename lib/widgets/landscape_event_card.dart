@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:package_ai_task/config/theme.dart';
+import 'package:package_ai_task/theme.dart';
 import 'package:package_ai_task/models/event.dart';
-import 'package:package_ai_task/screens/event_page/event_page.dart';
+import 'package:package_ai_task/screens/event_page.dart';
 import 'package:package_ai_task/utils.dart';
 
 class LandscapeEventCard extends StatelessWidget {

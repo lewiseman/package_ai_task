@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:package_ai_task/screens/event_page/event_page.dart';
+import 'package:package_ai_task/screens/event_page.dart';
 import 'package:package_ai_task/services/events_service.dart';
 
 class FavouritesPage extends ConsumerWidget {

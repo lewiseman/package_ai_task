@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:package_ai_task/config/theme.dart';
+import 'package:package_ai_task/theme.dart';
 
 class ExpandableText extends StatefulWidget {
   final String text;

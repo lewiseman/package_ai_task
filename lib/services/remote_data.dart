@@ -7,7 +7,7 @@ import 'package:package_ai_task/models/events_state.dart';
 
 class EventsRemoteRepository extends EventsRepository {
   final baseUrl = 'https://app.ticketmaster.com/discovery/v2';
-  final apiKey = 'msmAgH99VsgUbobINRc99qRREiCTWqdX';
+  final apiKey = const String.fromEnvironment('TICKET_MASTER_KEY');
   @override
   Future<List<Event>> fetchEvents({
     int page = 0,

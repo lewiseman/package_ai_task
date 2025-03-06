@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:package_ai_task/config/theme.dart';
+import 'package:package_ai_task/theme.dart';
 import 'package:package_ai_task/utils.dart';
 import 'package:package_ai_task/widgets/events_page_header.dart';
 import 'package:package_ai_task/widgets/horizontal_week_calendar.dart';

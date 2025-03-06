@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:package_ai_task/config/theme.dart';
+import 'package:package_ai_task/theme.dart';
 import 'package:package_ai_task/screens/events_page.dart';
 import 'package:package_ai_task/screens/explore_page.dart';
 import 'package:package_ai_task/screens/favourites_page.dart';
@@ -176,45 +176,56 @@ class _EventsAppState extends State<EventsApp> {
                   )
                   : null,
         ),
-        body: selected.destination,
-        bottomNavigationBar: AnimatedContainer(
-          duration: Duration(milliseconds: 300),
-          height: _isBottomNavVisible ? theme.navigationBarTheme.height : 0,
-          child: Wrap(
-            children: [
-              NavigationBar(
-                selectedIndex: _selectedIndex,
-                onDestinationSelected: (index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                },
-                labelBehavior:
-                    NavigationDestinationLabelBehavior.onlyShowSelected,
-                labelPadding: EdgeInsets.only(bottom: 16),
-                destinations:
-                    _navigations
-                        .map(
-                          (navigation) => NavigationDestination(
-                            icon: Image.asset(
-                              'assets/images/${navigation.image}',
-                              width: 30,
-                              height: 30,
-                              fit: BoxFit.fill,
-                            ),
-                            selectedIcon: Image.asset(
-                              'assets/images/${navigation.activeImage}',
-                              width: 40,
-                              height: 40,
-                              fit: BoxFit.fill,
-                            ),
-                            label: navigation.label,
-                          ),
-                        )
-                        .toList(),
-              ),
-            ],
+        body: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 700),
+            child: selected.destination,
           ),
+        ),
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AnimatedContainer(
+              duration: Duration(milliseconds: 300),
+              constraints: BoxConstraints(maxWidth: 800),
+              height: _isBottomNavVisible ? theme.navigationBarTheme.height : 0,
+              child: Wrap(
+                children: [
+                  NavigationBar(
+                    selectedIndex: _selectedIndex,
+                    onDestinationSelected: (index) {
+                      setState(() {
+                        _selectedIndex = index;
+                      });
+                    },
+                    labelBehavior:
+                        NavigationDestinationLabelBehavior.onlyShowSelected,
+                    labelPadding: EdgeInsets.only(bottom: 16),
+                    destinations:
+                        _navigations
+                            .map(
+                              (navigation) => NavigationDestination(
+                                icon: Image.asset(
+                                  'assets/images/${navigation.image}',
+                                  width: 30,
+                                  height: 30,
+                                  fit: BoxFit.fill,
+                                ),
+                                selectedIcon: Image.asset(
+                                  'assets/images/${navigation.activeImage}',
+                                  width: 40,
+                                  height: 40,
+                                  fit: BoxFit.fill,
+                                ),
+                                label: navigation.label,
+                              ),
+                            )
+                            .toList(),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
