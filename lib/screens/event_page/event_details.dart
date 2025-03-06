@@ -13,7 +13,7 @@ class EventDetailsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateTime = event.getTime();
+    final dateTimes = event.getTime();
     final classifications = event.topClassifications().take(6);
     return SingleChildScrollView(
       padding: const EdgeInsets.all(22),
@@ -33,44 +33,48 @@ class EventDetailsSection extends StatelessWidget {
             ),
             SizedBox(height: 26),
           ],
-          if (dateTime != null)
-            Card(
-              margin: EdgeInsets.zero,
-              color: Colors.grey[200],
-              shape: RoundedRectangleBorder(),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+          if (dateTimes.start != null || dateTimes.end != null)
+            Row(
+              children: [
+                Card(
+                  margin: EdgeInsets.zero,
+                  color: Colors.grey[200],
+                  shape: RoundedRectangleBorder(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
                       children: [
-                        Icon(CupertinoIcons.calendar, size: 26),
-                        SizedBox(width: 10),
-                        Column(
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Date'),
-                            Text(dateTime.humanWordsDate),
+                            Icon(CupertinoIcons.calendar, size: 26),
+                            SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Date'),
+                                // Text(dateTime.humanWordsDate),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(CupertinoIcons.time, size: 26),
+                            SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              // children: [Text('Time'), Text(dateTime.humanTime)],
+                            ),
                           ],
                         ),
                       ],
                     ),
-                    SizedBox(height: 16),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(CupertinoIcons.time, size: 26),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [Text('Time'), Text(dateTime.humanTime)],
-                        ),
-                      ],
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           SizedBox(height: 24),
           if (event.info.isNotEmpty) ...[

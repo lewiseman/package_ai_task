@@ -36,6 +36,9 @@ class EventsSearch extends SearchDelegate {
             }
             if (snapshot.hasData) {
               final results = snapshot.data ?? [];
+              if (results.isEmpty) {
+                return Center(child: Text('No results found'));
+              }
               return ListView.builder(
                 padding: const EdgeInsets.all(22),
                 itemCount: results.length,

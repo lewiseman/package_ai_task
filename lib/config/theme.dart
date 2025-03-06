@@ -19,7 +19,7 @@ abstract final class AppTheme {
     ),
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: Colors.white,
-      height: 100,
+      height: 95,
       indicatorColor: Colors.transparent,
     ),
     fontFamily: poppinsFont,

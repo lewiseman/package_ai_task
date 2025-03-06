@@ -1,17 +1,19 @@
 import 'package:package_ai_task/models/event.dart';
 
 sealed class EventsState {
-  const factory EventsState.loading() = EventsLoading;
+  const factory EventsState.loading(EventsLoadingType type) = EventsLoading;
   // const factory EventsState.loading() = Loading;
   const factory EventsState.data(
     List<Event> events, {
     required EventsDataSource source,
   }) = EventsData;
-  const factory EventsState.error(String message) = EventsError;
+  const factory EventsState.error(EventsErrorType type) = EventsError;
 }
 
 class EventsLoading implements EventsState {
-  const EventsLoading();
+  const EventsLoading(this.type);
+
+  final EventsLoadingType type;
 }
 
 class EventsData implements EventsState {
@@ -26,9 +28,9 @@ class EventsData implements EventsState {
 }
 
 class EventsError implements EventsState {
-  const EventsError(this.message);
+  const EventsError(this.type);
 
-  final String message;
+  final EventsErrorType type;
 }
 
 sealed class EventsDataSource {
@@ -36,6 +38,7 @@ sealed class EventsDataSource {
     int page,
     required bool hasMore,
     bool isLoading,
+    DateTime? date,
   }) = RemoteEvents;
   const factory EventsDataSource.local(LocalEventsReason rason) = LocalEvents;
 }
@@ -45,6 +48,7 @@ class RemoteEvents implements EventsDataSource {
     this.page = 0,
     required this.hasMore,
     this.isLoading = false,
+    this.date,
   });
 
   static const pageSize = 15;
@@ -52,12 +56,19 @@ class RemoteEvents implements EventsDataSource {
   final int page;
   final bool hasMore;
   final bool isLoading;
+  final DateTime? date;
 
-  RemoteEvents copyWith({int? page, bool? hasMore, bool? isLoading}) {
+  RemoteEvents copyWith({
+    int? page,
+    bool? hasMore,
+    bool? isLoading,
+    DateTime? date,
+  }) {
     return RemoteEvents(
       page: page ?? this.page,
       hasMore: hasMore ?? this.hasMore,
       isLoading: isLoading ?? this.isLoading,
+      date: date ?? this.date,
     );
   }
 }
@@ -69,3 +80,7 @@ class LocalEvents implements EventsDataSource {
 }
 
 enum LocalEventsReason { networkError, genericError }
+
+enum EventsLoadingType { full, date }
+
+enum EventsErrorType { unknown, fromDate }

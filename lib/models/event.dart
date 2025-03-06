@@ -71,13 +71,13 @@ class Event {
       ticketLimit: json['ticketLimit'] as Map<String, dynamic>? ?? {},
       ageRestrictions: json['ageRestrictions'] as Map<String, dynamic>? ?? {},
       venues:
-          json['_embedded']['venues'] != null
+          json['_embedded']?['venues'] != null
               ? List<Map<String, dynamic>>.from(
                 json['_embedded']['venues'] as List,
               )
               : [],
       attractions:
-          json['_embedded']['attractions'] != null
+          json['_embedded']?['attractions'] != null
               ? List<Map<String, dynamic>>.from(
                 json['_embedded']['attractions'] as List,
               )
@@ -121,10 +121,13 @@ class Event {
     return jsonEncode(toJson());
   }
 
-  DateTime? getTime() {
-    final datetime = dates['start']['dateTime'] as String?;
-    if (datetime == null) return null;
-    return DateTime.tryParse(datetime);
+  ({DateTime? start, DateTime? end}) getTime() {
+    final datetimestart = dates['start']?['dateTime'] as String?;
+    final datetimeend = dates['end']?['dateTime'] as String?;
+    return (
+      start: DateTime.tryParse(datetimestart ?? ''),
+      end: DateTime.tryParse(datetimeend ?? ''),
+    );
   }
 
   String? anyPrice() {

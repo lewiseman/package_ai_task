@@ -18,25 +18,39 @@ class EventsNotifier extends StateNotifier<EventsState> {
   EventsNotifier({
     required this.localRepository,
     required this.remoteRepository,
-  }) : super(const EventsState.loading()) {
+  }) : super(const EventsState.loading(EventsLoadingType.full)) {
     initialize();
   }
 
   final EventsRemoteRepository remoteRepository;
   final EventsLocalRepository localRepository;
 
-  void initialize() async {
-    final events = await remoteRepository.fetchEvents(
-      page: RemoteEvents.pageSize,
-    );
-    localRepository.saveEvents(events);
-    state = EventsState.data(
-      events,
-      source: EventsDataSource.remote(
-        hasMore: events.length == RemoteEvents.pageSize,
-        page: 1,
-      ),
-    );
+  void initialize({DateTime? date}) async {
+    try {
+      final events = await remoteRepository.fetchEvents(
+        page: RemoteEvents.pageSize,
+        date: date,
+      );
+      localRepository.saveEvents(events);
+      state = EventsState.data(
+        events,
+        source: EventsDataSource.remote(
+          hasMore: events.length == RemoteEvents.pageSize,
+          page: 1,
+          date: date,
+        ),
+      );
+    } catch (e) {
+      if (date != null) {
+        state = const EventsState.error(EventsErrorType.fromDate);
+        return;
+      }
+      final events = await localRepository.fetchEvents();
+      state = EventsState.data(
+        events,
+        source: LocalEvents(LocalEventsReason.networkError),
+      );
+    }
   }
 
   void nextPage() async {
@@ -51,6 +65,7 @@ class EventsNotifier extends StateNotifier<EventsState> {
 
         final nextEvents = await remoteRepository.fetchEvents(
           page: remoteState.page,
+          date: remoteState.date,
         );
         final events = currentState.events + nextEvents;
         localRepository.saveEvents(events);
@@ -66,24 +81,48 @@ class EventsNotifier extends StateNotifier<EventsState> {
     }
   }
 
+  void onDateRemoved() {
+    state = const EventsState.loading(EventsLoadingType.full);
+    initialize();
+  }
+
+  void onDateTapped(DateTime date) {
+    state = const EventsState.loading(EventsLoadingType.date);
+    initialize(date: date);
+  }
+
   Future<List<Event>> getSearchSuggestions(String query) async {
     final events = await localRepository.fetchEvents();
-    return events
-        .where((event) {
-          return event.name.toLowerCase().contains(query.toLowerCase());
-        })
-        .take(7)
-        .toList();
+    final Set<String> seenNames = {}; // To track unique event names
+    final suggestions =
+        events
+            .where((event) {
+              return event.name.toLowerCase().contains(query.toLowerCase());
+            })
+            .where(
+              (event) => seenNames.add(event.name.toLowerCase()),
+            ) // Keep only the first occurrence
+            .take(7)
+            .toList();
+    return suggestions;
   }
 
   Future<List<Event>> getLiveSearchResults(String query) async {
-    final suggestions = await getSearchSuggestions(query);
-    return suggestions
-        .where((event) {
-          return event.name.toLowerCase().contains(query.toLowerCase());
-        })
-        .take(7)
-        .toList();
+    try {
+      final response = await remoteRepository.searchEvents(query);
+      if (response.isEmpty) {
+        return getSearchSuggestions(query);
+      }
+      return response;
+    } catch (e) {
+      final suggestions = await getSearchSuggestions(query);
+      return suggestions
+          .where((event) {
+            return event.name.toLowerCase().contains(query.toLowerCase());
+          })
+          .take(7)
+          .toList();
+    }
   }
 }
 

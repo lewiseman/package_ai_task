@@ -11,7 +11,7 @@ class LandscapeEventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final image = event.images[2]['url'].toString();
-    final dateTime = event.getTime();
+    final dateTimes = event.getTime();
     final price = event.anyPrice();
     final classifications = event.topClassifications();
     return Container(
@@ -34,22 +34,42 @@ class LandscapeEventCard extends StatelessWidget {
         child: IntrinsicHeight(
           child: Row(
             children: [
-              Image.network(event.mainImage, width: 100, height: 100, fit: BoxFit.cover),
+              Image.network(
+                event.mainImage,
+                width: 100,
+                height: 100,
+                fit: BoxFit.cover,
+              ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (dateTime != null)
-                        Text(
-                          '${dateTime.humanSlashDate} • ${dateTime.humanTime}',
-                          style: TextStyle(
-                            color: AppTheme.primaryColor,
-                            fontFamily: AppTheme.poppinsFont,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                          ),
+                      if (dateTimes.start != null || dateTimes.end != null)
+                        Row(
+                          children: [
+                            if (dateTimes.start != null)
+                              Text(
+                                '${dateTimes.start!.humanSlashDate}${dateTimes.end == null ? ' • ${dateTimes.start!.humanTime}' : ' → '}',
+                                style: TextStyle(
+                                  color: AppTheme.primaryColor,
+                                  fontFamily: AppTheme.poppinsFont,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            if (dateTimes.end != null)
+                              Text(
+                                '${dateTimes.end!.humanSlashDate}${dateTimes.start == null ? ' • ${dateTimes.end!.humanTime}' : ''}',
+                                style: TextStyle(
+                                  color: AppTheme.primaryColor,
+                                  fontFamily: AppTheme.poppinsFont,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12,
+                                ),
+                              ),
+                          ],
                         ),
                       Text(
                         event.name,
