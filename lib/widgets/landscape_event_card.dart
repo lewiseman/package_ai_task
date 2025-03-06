@@ -12,7 +12,6 @@ class LandscapeEventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final image = event.images[2]['url'].toString();
     final dateTimes = event.getTime();
     final price = event.anyPrice();
     final classifications = event.topClassifications();

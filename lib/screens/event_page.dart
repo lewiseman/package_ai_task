@@ -100,7 +100,7 @@ class _EventPageState extends State<EventPage>
                             end: Alignment.topCenter,
                             colors: [
                               Colors.black,
-                              Colors.black.withOpacity(0.5),
+                              Colors.black.withValues(alpha: 0.5),
                               Colors.transparent,
                             ],
                           ),

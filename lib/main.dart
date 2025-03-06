@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_ai_task/app.dart';
 import 'package:package_ai_task/theme.dart';
-import 'package:package_ai_task/screens/events_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
